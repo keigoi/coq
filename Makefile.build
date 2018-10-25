@@ -779,6 +779,12 @@ Makefile $(wildcard Makefile.*) config/Makefile : ;
 %:
 	@echo "Error: no rule to make target $@ (or missing .PHONY)" && false
 
+coqios.o: $(LINKCMX) $(LIBCOQRUN) ../src/main.ml
+	$(OCAMLOPT) -linkall -linkpkg -I vernac -I toplevel -I intf -I library -I parsing -I stm -I lib\
+	                   -I kernel/byterun/ -cclib -lcoqrun \
+			   $(SYSMOD) -package camlp5.gramlib \
+	$(LINKCMX) $(OPTFLAGS) ../src/main.ml -output-complete-obj -o $@
+
 # For emacs:
 # Local Variables:
 # mode: makefile
